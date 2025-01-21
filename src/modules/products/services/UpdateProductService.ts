@@ -21,7 +21,7 @@ export default class UpdateProductService{
 
     const nameAlreadyExists = await productsRepository.findByName(name);
 
-    if(nameAlreadyExists){
+    if(nameAlreadyExists && nameAlreadyExists.id !== productToUpdate.id){
       throw new AppError('Já existe um produto com esse nome', 409);
     }
 
