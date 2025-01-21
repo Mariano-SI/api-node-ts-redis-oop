@@ -1,10 +1,9 @@
 import { getCustomRepository } from "typeorm";
 import ProductRepository from "../typeorm/repositories/ProductsRepository";
-import { UUID } from "crypto";
 import AppError from "@shared/errors/AppError";
 
 interface IRequest{
-  id: UUID,
+  id: string,
   name: string,
   price: number,
   quantity: number
