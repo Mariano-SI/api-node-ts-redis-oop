@@ -4,6 +4,8 @@ import ShowProductService from "../services/ShowProductService";
 import CreateProductService from "../services/CreateProductService";
 import UpdateProductService from "../services/UpdateProductService";
 import DeleteProductService from "../services/DeleteProductService";
+import { canCreateProduct, canDeleteProduct, canShowProduct } from "../common/validators";
+import canUpdateProduct from "../common/validators/canUpdateProduct";
 
 export default class ProductsController{
   public async index(req: Request, res: Response):Promise<Response>{
@@ -15,6 +17,7 @@ export default class ProductsController{
 
   public async show(req: Request, res: Response):Promise<Response>{
     const {id} = req.params;
+    await canShowProduct(req);
     const showProductService = new ShowProductService();
     const product = await showProductService.execute({id});
 
@@ -23,6 +26,8 @@ export default class ProductsController{
 
   public async create(req: Request, res: Response):Promise<Response>{
     const {name, price, quantity} = req.body;
+
+    await canCreateProduct(req);
     const createProductService = new CreateProductService();
     const createdProduct = await createProductService.execute({name, price, quantity});
 
@@ -33,6 +38,8 @@ export default class ProductsController{
     const {id} = req.params;
     const {name, price, quantity} = req.body;
 
+    await canUpdateProduct(req);
+
     const updateProductService = new UpdateProductService();
     const updatedProduct = await updateProductService.execute({id, name, price, quantity});
 
@@ -42,6 +49,7 @@ export default class ProductsController{
   public async delete(req: Request, res: Response):Promise<Response>{
     const {id} = req.params;
 
+    await canDeleteProduct(req);
     const deleteProductService = new DeleteProductService();
     await deleteProductService.execute({id});
 
