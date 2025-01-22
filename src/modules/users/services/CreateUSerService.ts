@@ -2,6 +2,7 @@ import { getCustomRepository } from "typeorm";
 import User from "../typeorm/entities/User";
 import UsersRepository from "../typeorm/repositories/UsersRepository";
 import AppError from "@shared/errors/AppError";
+import { hash } from "bcryptjs";
 
 interface IRequest{
   name: string,
@@ -19,7 +20,14 @@ export default class CreateUserService{
       throw new AppError('Email já cadastrado', 409);
     }
 
-    const user = usersRepository.create({name, email, password});
+    const hashedPassword = await hash(password, 8);
+
+    const user = usersRepository.create({
+      name,
+      email,
+      password: hashedPassword
+    });
+    
     const createdUser = await usersRepository.save(user);
     return createdUser;
 
