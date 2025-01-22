@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import ShowUserProfileService from "../services/ShowUserProfileService";
 import UpdateUserProfileService from "../services/UpdateUserProfileService";
+import { canUpdateUserProfile } from "../common/validators";
 
 export default class ProfileController{
   public async show(req: Request, res: Response){
@@ -14,7 +15,9 @@ export default class ProfileController{
   public async update(req: Request, res: Response){
     const updateUserProfileService = new UpdateUserProfileService();
     const userId = req.user.id;
-    const {name, email, password, oldPassword} = req.body
+    const {name, email, password, oldPassword} = req.body;
+
+    await canUpdateUserProfile(req);
 
     const user = await updateUserProfileService.execute({
       id: userId,
