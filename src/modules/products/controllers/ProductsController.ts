@@ -4,8 +4,7 @@ import ShowProductService from "../services/ShowProductService";
 import CreateProductService from "../services/CreateProductService";
 import UpdateProductService from "../services/UpdateProductService";
 import DeleteProductService from "../services/DeleteProductService";
-import { canCreateProduct, canDeleteProduct, canShowProduct } from "../common/validators";
-import canUpdateProduct from "../common/validators/canUpdateProduct";
+import { canCreateProduct, canDeleteProduct, canShowProduct, canUpdateProduct } from "../common/validators";
 
 export default class ProductsController{
   public async index(req: Request, res: Response):Promise<Response>{
