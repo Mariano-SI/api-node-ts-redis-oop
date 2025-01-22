@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import ListUsersService from "../services/ListUsersService";
-import User from "../typeorm/entities/User";
 import CreateUserService from "../services/CreateUserService";
 import { canCreateUser } from "../common/validators";
 
@@ -16,7 +15,7 @@ export default class UsersController{
   public async create(req: Request, res: Response): Promise<Response>{
     const {name, email, password} = req.body;
     await canCreateUser(req);
-    
+
     const createUserService = new CreateUserService();
 
     const createdUser = await createUserService.execute({name, email, password});
