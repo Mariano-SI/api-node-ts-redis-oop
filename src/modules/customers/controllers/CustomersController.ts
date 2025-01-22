@@ -4,6 +4,7 @@ import ShowCustomerService from "../services/ShowCustomerService";
 import CreateCustomerService from "../services/CreateCustomerService";
 import DeleteCustomerService from "../services/DeleteCustomerService";
 import UpdateCustomerService from "../services/UpdateCustomerService";
+import { canCreateCustomer, canDeleteCustomer, canShowCustomer, canUpdateCustomer } from "../common/validators";
 
 export default class CustomersController{
   public async index(req:Request, res: Response){
@@ -15,6 +16,8 @@ export default class CustomersController{
 
   public async show(req:Request, res: Response){
     const {id} = req.params;
+
+    await canShowCustomer(req);
     const showCustomerService = new ShowCustomerService();
     const customer = await showCustomerService.execute({id});
 
@@ -22,8 +25,9 @@ export default class CustomersController{
   }
 
   public async create(req:Request, res: Response){
-
     const {name, email} = req.body;
+
+    await canCreateCustomer(req);
     const createCustomerService = new CreateCustomerService();
     const customer = await createCustomerService.execute({ name, email});
 
@@ -31,8 +35,9 @@ export default class CustomersController{
   }
 
   public async delete(req:Request, res: Response){
-
     const {id} = req.params;
+
+    await canDeleteCustomer(req);
     const deleteCustomerService = new DeleteCustomerService();
     await deleteCustomerService.execute({id});
 
@@ -43,6 +48,8 @@ export default class CustomersController{
 
     const {id} = req.params;
     const {name, email} = req.body;
+
+    await canUpdateCustomer(req);
     const updateCustomerService = new UpdateCustomerService();
     const updatedCustomer = await updateCustomerService.execute({id, name, email});
 
