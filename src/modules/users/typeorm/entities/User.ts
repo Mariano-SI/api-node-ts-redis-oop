@@ -12,7 +12,7 @@ export default class User{
   email: string;
 
   @Column()
-  passoword: string;
+  password: string;
 
   @Column()
   avatar: string;
