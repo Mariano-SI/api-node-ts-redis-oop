@@ -50,19 +50,19 @@ export default class CreateOrderService{
       products: productsToSave
     });
 
+
+
     const {order_products} = order;
 
-    const updatedQuantity = order_products.map((orderProduct) =>{
-      const complatibleProduct = products.find((product) => product.id === orderProduct.id);
-      const quantityToDiscount = complatibleProduct && complatibleProduct.quantity;
-
-      return {
-        id: orderProduct.id,
-        quantity: orderProduct.quantity - (quantityToDiscount ? quantityToDiscount: 0)
+    for (const orderProduct of order_products) {
+      const compatibleProduct = products.find((product) => product.id === orderProduct.product_id);
+      const countToDiscount = compatibleProduct ? compatibleProduct.quantity : 0;
+      const product = await productsRepository.findById(orderProduct.product_id);
+      if(product){
+        product.quantity -= countToDiscount
+        await productsRepository.save(product)
       }
-    });
-
-    await productsRepository.save(updatedQuantity);
+    }
 
     return order;
   }
