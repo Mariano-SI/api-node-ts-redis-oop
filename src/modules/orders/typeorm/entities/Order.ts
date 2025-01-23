@@ -1,5 +1,5 @@
 import Customer from "@modules/customers/typeorm/entities/Customer";
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity('orders')
 export default class Order{
@@ -9,9 +9,6 @@ export default class Order{
   @ManyToOne(() => Customer)
   @JoinColumn({name:'customer_id'})
   customer: Customer;
-
-  @Column()
-  email: string;
 
   @CreateDateColumn()
   created_at: Date;
