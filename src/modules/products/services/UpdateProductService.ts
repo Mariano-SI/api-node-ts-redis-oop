@@ -1,6 +1,7 @@
 import { getCustomRepository } from "typeorm";
 import ProductRepository from "../typeorm/repositories/ProductsRepository";
 import AppError from "@shared/errors/AppError";
+import RedisCache from "@shared/cache/RedisCache";
 
 interface IRequest{
   id: string,
@@ -11,6 +12,7 @@ interface IRequest{
 export default class UpdateProductService{
   public async execute({id, name, price, quantity}:IRequest){
     const productsRepository = getCustomRepository(ProductRepository);
+    const redisCache = new RedisCache();
 
     const productToUpdate = await productsRepository.findOne(id);
 
@@ -27,6 +29,8 @@ export default class UpdateProductService{
     productToUpdate.name = name;
     productToUpdate.price = price;
     productToUpdate.quantity = quantity;
+
+    await redisCache.invalidate('api-vendas-PRODUCT_LIST');
 
     return await productsRepository.save(productToUpdate)
 
