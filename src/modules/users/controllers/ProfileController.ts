@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import ShowUserProfileService from "../services/ShowUserProfileService";
 import UpdateUserProfileService from "../services/UpdateUserProfileService";
 import { canUpdateUserProfile } from "../common/validators";
+import { instanceToInstance } from "class-transformer";
 
 export default class ProfileController{
   public async show(req: Request, res: Response){
@@ -9,7 +10,7 @@ export default class ProfileController{
 
     const user = await showProfileServise.execute({id: req.user.id});
 
-    return res.status(200).json(user)
+    return res.status(200).json(instanceToInstance(user))
   }
 
   public async update(req: Request, res: Response){
@@ -27,6 +28,6 @@ export default class ProfileController{
       oldPassword
     });
 
-    return res.status(200).json(user);
+    return res.status(200).json(instanceToInstance(user));
   }
 }

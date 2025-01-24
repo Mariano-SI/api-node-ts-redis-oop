@@ -1,5 +1,5 @@
 import { Router } from "express";
-import ProfileController from "../controllers/ProfileControler";
+import ProfileController from "../controllers/ProfileController";
 import isAuthenticated from "@shared/http/middlewares/isAuthenticated";
 
 
